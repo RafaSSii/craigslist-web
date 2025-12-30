@@ -3,7 +3,7 @@ class ListingsController < ApplicationController
 
   # GET /listings or /listings.json
   def index
-    @listings = Listing.all
+    @listings = Current.user.listings
   end
 
   # GET /listings/1 or /listings/1.json
@@ -12,7 +12,7 @@ class ListingsController < ApplicationController
 
   # GET /listings/new
   def new
-    @listing = Listing.new
+    @listing = Current.user.listings.new
   end
 
   # GET /listings/1/edit
@@ -21,7 +21,7 @@ class ListingsController < ApplicationController
 
   # POST /listings or /listings.json
   def create
-    @listing = Listing.new(listing_params)
+    @listing = Current.user.listings.new(listing_params)
 
     respond_to do |format|
       if @listing.save
@@ -60,11 +60,11 @@ class ListingsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_listing
-      @listing = Listing.find(params.expect(:id))
+      @listing = Current.user.listings.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def listing_params
-      params.expect(listing: [ :name, :description, :user_id, :price, :location, :x, :y, images: [] ])
+      params.expect(listing: [ :name, :description, :price, :location, :x, :y, images: [] ])
     end
 end
